@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Gaze FIDO</title>
+  <desc id="desc">An eye surrounding a protected keyhole on a blue-violet background.</desc>
+  <defs>
+    <linearGradient id="background" x1="64" y1="48" x2="448" y2="464" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#6d28d9"/>
+    </linearGradient>
+    <linearGradient id="iris" x1="205" y1="193" x2="307" y2="319" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#dbeafe"/>
+      <stop offset="1" stop-color="#bfdbfe"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#background)"/>
+  <path d="M74 256c45-72 106-108 182-108s137 36 182 108c-45 72-106 108-182 108S119 328 74 256Z"
+        fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/>
+  <circle cx="256" cy="256" r="76" fill="url(#iris)"/>
+  <circle cx="256" cy="256" r="34" fill="#172554"/>
+  <path d="M256 215c-23 0-41 18-41 41 0 13 6 24 15 32v42h52v-42c9-8 15-19 15-32 0-23-18-41-41-41Zm0 22c11 0 19 8 19 19 0 11-8 19-19 19s-19-8-19-19c0-11 8-19 19-19Z"
+        fill="#fff" fill-rule="evenodd"/>
+</svg>

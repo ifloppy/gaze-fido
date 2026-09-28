@@ -1,12 +1,44 @@
+<p align="center">
+  <img src="assets/gaze-fido-icon.svg" alt="Gaze FIDO icon" width="144">
+</p>
+
 # gaze-fido — Linux virtual FIDO2 authenticator for WebAuthn passkeys
 
-[![Linux release packages](https://github.com/ifloppy/gaze-fido/actions/workflows/release.yml/badge.svg)](https://github.com/ifloppy/gaze-fido/actions/workflows/release.yml) [![Latest release](https://img.shields.io/github/v/release/ifloppy/gaze-fido?include_prereleases&sort=semver)](https://github.com/ifloppy/gaze-fido/releases) [![AGPL-3.0 license](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
+<p align="center">
+  <strong>TPM-backed passkeys with Gaze face verification</strong><br>
+  A local Linux security key for WebAuthn and CTAP2
+</p>
 
-gaze-fido is an experimental Linux virtual FIDO2 authenticator and WebAuthn security key. It exposes a CTAP2 authenticator over UHID, uses Gaze face verification for user presence and verification, and keeps WebAuthn passkey credentials protected by TPM 2.0 P-256 keys. The daemon and Qt desktop companion are written in Rust and integrate with KDE and other Linux desktops.
+<p align="center">
+  <a href="https://github.com/ifloppy/gaze-fido/actions/workflows/release.yml"><img src="https://github.com/ifloppy/gaze-fido/actions/workflows/release.yml/badge.svg" alt="Linux release packages"></a>
+  <a href="https://github.com/ifloppy/gaze-fido/releases"><img src="https://img.shields.io/github/v/release/ifloppy/gaze-fido?include_prereleases&sort=semver" alt="Latest release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue.svg" alt="AGPL-3.0 license"></a>
+</p>
 
-Download an x86_64 package from the [GitHub Releases](https://github.com/ifloppy/gaze-fido/releases) page, or build from this repository.
+gaze-fido is an experimental Linux virtual FIDO2 authenticator and WebAuthn
+security key. It exposes a CTAP2 authenticator over UHID, uses Gaze face
+verification for user presence and verification, and keeps WebAuthn passkey
+credentials protected by TPM 2.0 P-256 keys. The daemon and Qt desktop
+companion are written in Rust and integrate with KDE and other Linux desktops.
 
-## What works
+Download an x86_64 package from the [GitHub Releases](https://github.com/ifloppy/gaze-fido/releases)
+page, or build from this repository.
+
+## Project status
+
+| | |
+| --- | --- |
+| Current release | `v0.1.0` — experimental, x86_64 Linux packages |
+| Tested end to end | Firefox registration and authentication on [webauthn.io](https://webauthn.io) |
+| Desktop integration | Qt companion with tray manager and separate topmost Gaze prompt |
+| Security boundary | TPM 2.0 protected keys, Gaze-gated signatures, fail-closed errors |
+| License | [AGPL-3.0-only](LICENSE) |
+
+The project is under active development. See the
+[architecture](docs/ARCHITECTURE.md) and [threat model](docs/THREAT_MODEL.md)
+before using it for important accounts.
+
+## Features
 
 - Linux UHID virtual FIDO HID device and CTAP HID framing.
 - CTAP2 `getInfo`, passkey registration, and assertion handling through the CTAP implementation.
@@ -16,7 +48,14 @@ Download an x86_64 package from the [GitHub Releases](https://github.com/ifloppy
 - Local CBOR credential store under `$XDG_DATA_HOME/gaze-fido/credentials.cbor` or `~/.local/share/gaze-fido/credentials.cbor`, with a private directory and file mode.
 - Linux desktop companion with a foreground Gaze verification prompt and local passkey listing/deletion.
 
-The browser sees a cross-platform/security-key authenticator. It is not exposed as a native Linux platform authenticator, and credentials do not sync to other devices. The companion must be running for authentication; the daemon fails closed when the desktop confirmation UI is disconnected. When several accounts exist for one relying party, the daemon asks for a selection in its controlling terminal.
+## Current limitations
+
+The browser sees a cross-platform/security-key authenticator. It is not exposed
+as a native Linux platform authenticator, and credentials do not synchronize to
+other devices. The companion must be running for authentication; the daemon
+fails closed when the desktop confirmation UI is disconnected. When several
+accounts exist for one relying party, the daemon asks for a selection in its
+controlling terminal.
 
 ## Requirements
 
@@ -88,7 +127,16 @@ Configuration:
 
 The daemon fails closed if it cannot reach Gaze, open the TPM, create and sign with a TPM P-256 probe key, open UHID, or load the credential store. There is no software-key fallback or authenticator PIN fallback.
 
-Open a WebAuthn test site such as [webauthn.io](https://webauthn.io), choose a security key/external authenticator, then complete the Gaze check to register or use a passkey. Firefox registration and authentication have been exercised on webauthn.io. Support across browsers, relying parties, and desktop environments still needs broader validation.
+To try it, open [webauthn.io](https://webauthn.io), choose a security key/external authenticator, and complete the Gaze prompt during registration or sign-in.
+
+## Compatibility
+
+| Component | Current coverage |
+| --- | --- |
+| Browser | Firefox registration and authentication tested on webauthn.io; Chromium and additional relying parties still need validation |
+| Transport | Linux UHID virtual authenticator exposed as an external security key |
+| Desktop | Qt 6 companion; KDE Plasma styling is supported when the KDE Qt style is installed |
+| Distribution | x86_64 packages for Arch Linux, Debian 13, Ubuntu 26.04, and Fedora 44 |
 
 ## Security boundary
 
@@ -108,9 +156,19 @@ cargo check
 cargo test
 ```
 
+## Reporting issues
+
+For compatibility and bug reports, include the desktop environment, browser
+version, relying party, package version, and relevant redacted service logs.
+Never post credential IDs, TPM blobs, face data, or other sensitive material.
+The repository does not currently have a private vulnerability reporting
+channel. Do not publish unpatched vulnerability details in a public issue.
+
 ## Repository layout
 
 ```text
+assets/
+  gaze-fido-icon.svg
 src/
   authenticator/  CTAP configuration and persistent credential callbacks
   companion.rs    Per-user desktop UI socket and verification prompt broker
@@ -120,7 +178,6 @@ src/
 docs/
   ARCHITECTURE.md
   THREAT_MODEL.md
-  ROADMAP.md
 ui/
   src/qml/Main.qml  Qt Quick desktop verification prompt and local credential manager
 ```
