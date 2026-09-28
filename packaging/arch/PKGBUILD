@@ -6,6 +6,7 @@ pkgrel=8
 pkgdesc='Linux FIDO2 authenticator with Gaze verification and TPM-backed keys'
 arch=('x86_64')
 license=('AGPL-3.0-only')
+options=('!debug')
 depends=('kirigami' 'qqc2-desktop-style' 'qt6-base' 'qt6-declarative' 'tpm2-tss')
 makedepends=('clang' 'cmake' 'lld' 'rust' 'qt6-base' 'qt6-declarative')
 install='gaze-fido.install'

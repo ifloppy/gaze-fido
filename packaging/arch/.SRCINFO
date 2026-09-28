@@ -16,5 +16,6 @@ pkgbase = gaze-fido
 	depends = qt6-base
 	depends = qt6-declarative
 	depends = tpm2-tss
+	options = !debug
 
 pkgname = gaze-fido

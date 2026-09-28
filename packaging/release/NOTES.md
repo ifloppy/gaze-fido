@@ -9,7 +9,7 @@ Gaze FIDO is an experimental Linux CTAP2 authenticator. It requires a TPM 2.0 de
 
 The source archive includes all locked Cargo dependencies. Verify downloaded files with `SHA256SUMS`.
 
-For Debian and RPM packages, enable the daemon after installing:
+After installing any package, enable the daemon for the current user:
 
 ```sh
 systemctl --user enable --now gaze-fido.service
