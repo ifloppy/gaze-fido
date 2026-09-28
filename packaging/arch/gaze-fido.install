@@ -1,0 +1,21 @@
+_gaze_fido_refresh_udev() {
+  if ! command -v udevadm >/dev/null 2>&1; then
+    return
+  fi
+
+  udevadm control --reload-rules
+  udevadm trigger --action=add --subsystem-match=tpmrm --sysname-match=tpmrm0
+  udevadm trigger --action=add --subsystem-match=misc --sysname-match=uhid
+}
+
+post_install() {
+  _gaze_fido_refresh_udev
+}
+
+post_upgrade() {
+  _gaze_fido_refresh_udev
+}
+
+post_remove() {
+  _gaze_fido_refresh_udev
+}

@@ -1,0 +1,20 @@
+pkgbase = gaze-fido
+	pkgdesc = Linux FIDO2 authenticator with Gaze verification and TPM-backed keys
+	pkgver = 0.1.0
+	pkgrel = 7
+	install = gaze-fido.install
+	arch = x86_64
+	license = unknown
+	makedepends = clang
+	makedepends = cmake
+	makedepends = lld
+	makedepends = rust
+	makedepends = qt6-base
+	makedepends = qt6-declarative
+	depends = kirigami
+	depends = qqc2-desktop-style
+	depends = qt6-base
+	depends = qt6-declarative
+	depends = tpm2-tss
+
+pkgname = gaze-fido

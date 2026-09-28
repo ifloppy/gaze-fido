@@ -1,0 +1,22 @@
+[package]
+name = "gaze-fido"
+version = "0.1.0"
+edition = "2024"
+description = "Experimental Linux FIDO2 authenticator using Gaze for user verification and TPM 2.0 for key protection"
+publish = false
+
+[workspace]
+members = ["ui"]
+resolver = "2"
+
+[dependencies]
+futures-util = "0.3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.11"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "time", "net", "io-util", "sync"] }
+tss-esapi = "7.7.0"
+soft-fido2 = { version = "0.17.0", default-features = false, features = ["std"] }
+soft-fido2-ctap = { version = "0.17.0", default-features = false, features = ["std"] }
+soft-fido2-transport = { version = "0.17.0", default-features = false }
+zbus = "5.19.0"

@@ -1,0 +1,11 @@
+/target
+/.playwright-mcp/
+/ui/__pycache__/
+/ui/.qmlls.ini
+/dist/
+/packaging/arch/pkg/
+/packaging/arch/src/
+/packaging/arch/*.pkg.tar
+/packaging/arch/*.pkg.tar.*
+/packaging/arch/*.log
+/packaging/arch/*.log.*

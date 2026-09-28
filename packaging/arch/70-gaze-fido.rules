@@ -1,0 +1,4 @@
+# Grant the active local desktop session access to the authenticator devices.
+# Keep this before 73-seat-late.rules so systemd-logind applies uaccess ACLs.
+ACTION!="remove", SUBSYSTEM=="tpmrm", KERNEL=="tpmrm0", TAG+="uaccess"
+ACTION!="remove", SUBSYSTEM=="misc", KERNEL=="uhid", TAG+="uaccess"

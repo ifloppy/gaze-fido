@@ -1,0 +1,16 @@
+[Unit]
+Description=Gaze FIDO2 virtual authenticator
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+Environment=USER=%u
+Environment=LOGNAME=%u
+Environment=HOME=%h
+ExecStart=/usr/bin/gaze-fido
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=graphical-session.target

@@ -1,0 +1,45 @@
+# Local Arch package for the current checkout.
+# Before publishing this as an AUR package, add an upstream source URL and
+# license metadata; this recipe intentionally builds from the parent checkout.
+pkgname=gaze-fido
+pkgver=0.1.0
+pkgrel=7
+pkgdesc='Linux FIDO2 authenticator with Gaze verification and TPM-backed keys'
+arch=('x86_64')
+license=('unknown')
+depends=('kirigami' 'qqc2-desktop-style' 'qt6-base' 'qt6-declarative' 'tpm2-tss')
+makedepends=('clang' 'cmake' 'lld' 'rust' 'qt6-base' 'qt6-declarative')
+install='gaze-fido.install'
+
+_srcroot="$(realpath "${startdir}/../..")"
+
+build() {
+  if [[ "${GAZE_FIDO_PACKAGE_REUSE_INSTALLED_BINARIES:-0}" != 1 ]]; then
+    cd "${_srcroot}"
+    export CC=clang
+    export CXX=clang++
+    export QMAKE="${QMAKE:-qmake6}"
+    cargo build --release --locked --offline --workspace
+  fi
+}
+
+package() {
+  install -Dm755 "${_srcroot}/target/release/gaze-fido" \
+    "${pkgdir}/usr/bin/gaze-fido"
+  install -Dm755 "${_srcroot}/target/release/gaze-fido-ui" \
+    "${pkgdir}/usr/bin/gaze-fido-ui"
+
+  install -Dm644 "${_srcroot}/ui/org.gazefido.gazefido.desktop" \
+    "${pkgdir}/usr/share/applications/org.gazefido.gazefido.desktop"
+  install -Dm644 "${startdir}/gaze-fido-autostart.desktop" \
+    "${pkgdir}/etc/xdg/autostart/gaze-fido.desktop"
+  install -Dm644 "${startdir}/gaze-fido.service" \
+    "${pkgdir}/usr/lib/systemd/user/gaze-fido.service"
+  install -Dm644 "${startdir}/70-gaze-fido.rules" \
+    "${pkgdir}/usr/lib/udev/rules.d/70-gaze-fido.rules"
+
+  install -Dm644 "${_srcroot}/README.md" \
+    "${pkgdir}/usr/share/doc/gaze-fido/README.md"
+  install -Dm644 "${_srcroot}/docs/THREAT_MODEL.md" \
+    "${pkgdir}/usr/share/doc/gaze-fido/THREAT_MODEL.md"
+}

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Gaze FIDO
+Comment=TPM-backed passkeys with Gaze face verification
+Exec=gaze-fido-ui
+Icon=security-high
+Terminal=false
+Categories=System;Security;
+StartupWMClass=gaze-fido-ui

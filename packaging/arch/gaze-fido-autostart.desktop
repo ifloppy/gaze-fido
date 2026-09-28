@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Gaze FIDO Companion
+Comment=Manage local Gaze-verified passkeys
+Exec=/usr/bin/gaze-fido-ui
+Icon=security-high
+Terminal=false
+NoDisplay=true
+X-GNOME-Autostart-enabled=true
+X-KDE-autostart-after=panel
