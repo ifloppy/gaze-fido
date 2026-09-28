@@ -23,6 +23,25 @@ The browser sees a cross-platform/security-key authenticator. It is not exposed 
 - Qt 6 with Qt Quick Controls 2 development files and a C++ compiler for the Rust desktop companion. KDE Plasma uses the installed KDE Qt Quick style when available.
 - When running directly from the checkout, the account needs access to `/dev/tpmrm0` and `/dev/uhid`. The Arch package installs a udev `uaccess` rule that grants this access only to the active local desktop session.
 
+## Binary packages
+
+The GitHub Releases page provides x86_64 packages for these build targets:
+
+| Distribution family | Build target | Package |
+| --- | --- | --- |
+| Arch Linux and compatible distributions such as CachyOS | Arch rolling | `.pkg.tar.zst` |
+| Debian | Debian 13 (Trixie) | `.deb` |
+| Ubuntu | Ubuntu 26.04 LTS | `.deb` |
+| Fedora | Fedora 44 | `.rpm` |
+
+Download the matching package from [Releases](https://github.com/ifloppy/gaze-fido/releases) and verify it against `SHA256SUMS`. These packages install the daemon, desktop companion, user systemd unit, autostart entry, and udev rule. They do not install Gaze itself. A working Gaze D-Bus service and TPM 2.0 device are required. After installation, enable the daemon for the current user with:
+
+```sh
+systemctl --user enable --now gaze-fido.service
+```
+
+The Arch PKGBUILD is for building from a source checkout; it is not currently an AUR recipe.
+
 ## Run
 
 ### Install the local Arch package
@@ -30,6 +49,7 @@ The browser sees a cross-platform/security-key authenticator. It is not exposed 
 The repository includes a PKGBUILD for building a package from this checkout:
 
 ```sh
+cargo fetch --locked
 cd packaging/arch
 makepkg -si
 systemctl --user enable --now gaze-fido.service
@@ -39,8 +59,6 @@ The package installs the daemon, Qt companion, a desktop launcher, a desktop
 autostart entry, and a user systemd service. Its udev rule grants the active
 local desktop session access to `/dev/tpmrm0` and `/dev/uhid`. The companion
 opens on desktop login; the daemon starts with `graphical-session.target`.
-This local PKGBUILD is not ready to publish to the AUR until the project has an
-upstream source URL and a declared project license.
 
 ### Run from the checkout
 
@@ -76,7 +94,7 @@ The project is experimental and is not yet suitable for irreplaceable production
 
 ## Dependency license
 
-The CTAP2 implementation dependency [`soft-fido2`](https://github.com/pando85/soft-fido2) is distributed under AGPL-3.0. This repository still has no project-level license; review the dependency terms before redistributing the combined daemon. See its [upstream license](https://github.com/pando85/soft-fido2/blob/master/LICENSE).
+Gaze FIDO is distributed under [AGPL-3.0](LICENSE), matching the license of its CTAP2 implementation dependency [`soft-fido2`](https://github.com/pando85/soft-fido2). Release packages include the license and a source archive with the locked Cargo dependencies vendored.
 
 ## Development
 

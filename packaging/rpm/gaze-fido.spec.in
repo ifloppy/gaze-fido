@@ -1,0 +1,73 @@
+Name:           gaze-fido
+Version:        @VERSION@
+Release:        1%{?dist}
+Summary:        Gaze-verified Linux FIDO2 authenticator
+License:        AGPL-3.0-only
+URL:            https://github.com/ifloppy/gaze-fido
+BuildArch:      x86_64
+
+Requires:       kf6-kirigami
+Requires:       qt6-qtbase-gui
+Requires:       qt6-qtdeclarative
+Requires:       qt6-qtquickcontrols2
+Requires:       tpm2-tss
+
+%description
+Linux CTAP2 authenticator exposed over UHID. TPM 2.0 protects credential
+keys and Gaze face verification authorizes each signature.
+
+%prep
+
+%build
+cd %{project_root}
+cargo build --release --locked --workspace
+
+%install
+rm -rf %{buildroot}
+install -Dpm0755 %{project_root}/target/release/gaze-fido \
+    %{buildroot}/usr/bin/gaze-fido
+install -Dpm0755 %{project_root}/target/release/gaze-fido-ui \
+    %{buildroot}/usr/bin/gaze-fido-ui
+install -Dpm0644 %{project_root}/ui/org.gazefido.gazefido.desktop \
+    %{buildroot}/usr/share/applications/org.gazefido.gazefido.desktop
+install -Dpm0644 %{project_root}/packaging/arch/gaze-fido-autostart.desktop \
+    %{buildroot}/etc/xdg/autostart/gaze-fido.desktop
+install -Dpm0644 %{project_root}/packaging/arch/gaze-fido.service \
+    %{buildroot}/usr/lib/systemd/user/gaze-fido.service
+install -Dpm0644 %{project_root}/packaging/arch/70-gaze-fido.rules \
+    %{buildroot}/usr/lib/udev/rules.d/70-gaze-fido.rules
+install -Dpm0644 %{project_root}/README.md \
+    %{buildroot}/usr/share/doc/gaze-fido/README.md
+install -Dpm0644 %{project_root}/docs/THREAT_MODEL.md \
+    %{buildroot}/usr/share/doc/gaze-fido/THREAT_MODEL.md
+install -Dpm0644 %{project_root}/LICENSE \
+    %{buildroot}/usr/share/licenses/gaze-fido/LICENSE
+
+%posttrans
+if command -v udevadm >/dev/null 2>&1; then
+    udevadm control --reload-rules || :
+    udevadm trigger --action=add --subsystem-match=tpmrm --sysname-match=tpmrm0 || :
+    udevadm trigger --action=add --subsystem-match=misc --sysname-match=uhid || :
+fi
+
+%postun
+if command -v udevadm >/dev/null 2>&1; then
+    udevadm control --reload-rules || :
+    udevadm trigger --action=add --subsystem-match=tpmrm --sysname-match=tpmrm0 || :
+    udevadm trigger --action=add --subsystem-match=misc --sysname-match=uhid || :
+fi
+
+%files
+%license /usr/share/licenses/gaze-fido/LICENSE
+/etc/xdg/autostart/gaze-fido.desktop
+/usr/bin/gaze-fido
+/usr/bin/gaze-fido-ui
+/usr/lib/systemd/user/gaze-fido.service
+/usr/lib/udev/rules.d/70-gaze-fido.rules
+/usr/share/applications/org.gazefido.gazefido.desktop
+/usr/share/doc/gaze-fido/README.md
+/usr/share/doc/gaze-fido/THREAT_MODEL.md
+
+%changelog
+* Mon Sep 28 2026 Gaze FIDO contributors <ifloppy@users.noreply.github.com> - @VERSION@-1
+- Initial Fedora package

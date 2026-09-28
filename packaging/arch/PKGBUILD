@@ -1,12 +1,11 @@
-# Local Arch package for the current checkout.
-# Before publishing this as an AUR package, add an upstream source URL and
-# license metadata; this recipe intentionally builds from the parent checkout.
+# Arch package for the current source checkout.
+# This recipe is not an AUR recipe; it intentionally builds from the parent checkout.
 pkgname=gaze-fido
 pkgver=0.1.0
-pkgrel=7
+pkgrel=8
 pkgdesc='Linux FIDO2 authenticator with Gaze verification and TPM-backed keys'
 arch=('x86_64')
-license=('unknown')
+license=('AGPL-3.0-only')
 depends=('kirigami' 'qqc2-desktop-style' 'qt6-base' 'qt6-declarative' 'tpm2-tss')
 makedepends=('clang' 'cmake' 'lld' 'rust' 'qt6-base' 'qt6-declarative')
 install='gaze-fido.install'
@@ -42,4 +41,6 @@ package() {
     "${pkgdir}/usr/share/doc/gaze-fido/README.md"
   install -Dm644 "${_srcroot}/docs/THREAT_MODEL.md" \
     "${pkgdir}/usr/share/doc/gaze-fido/THREAT_MODEL.md"
+  install -Dm644 "${_srcroot}/LICENSE" \
+    "${pkgdir}/usr/share/licenses/gaze-fido/LICENSE"
 }
