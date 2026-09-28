@@ -104,9 +104,10 @@ jobs:
             chown -R builder:builder /src
             runuser -u builder -- bash -lc "export PATH=\$HOME/.cargo/bin:\$PATH; rustup toolchain install stable --profile minimal; rustup default stable; cd /src; cargo fetch --locked; cd packaging/arch; makepkg -f --nodeps --noconfirm"
             mkdir -p /src/dist
-            package="$(find /src/packaging/arch -maxdepth 1 -type f -name "gaze-fido-*.pkg.tar.zst" -print -quit)"
-            test -n "$package"
-            install -m644 "$package" /src/dist/
+            mapfile -t packages < <(find /src/packaging/arch -maxdepth 1 -type f -name "gaze-fido-[0-9]*.pkg.tar.zst" -print)
+            test "${#packages[@]}" -eq 1
+            test "$(pacman -Qp "${packages[0]}" | awk '{print $1}')" = gaze-fido
+            install -m644 "${packages[0]}" /src/dist/
           '
       - uses: actions/upload-artifact@v7
         with:
