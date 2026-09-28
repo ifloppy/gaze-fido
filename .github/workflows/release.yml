@@ -102,7 +102,7 @@ jobs:
               qt6-base qt6-declarative rustup tpm2-tss
             useradd --create-home builder
             mkdir -p /src/target /src/packaging/arch
-            chown -R builder:builder /src/target /src/packaging/arch
+            chown -R builder:builder /src/target /src/ui /src/packaging/arch
             runuser -u builder -- bash -lc "export PATH=\$HOME/.cargo/bin:\$PATH; rustup toolchain install stable --profile minimal; rustup default stable; cd /src; cargo fetch --locked; cd packaging/arch; makepkg -f --nodeps --noconfirm"
             mkdir -p /src/dist
             package="$(find /src/packaging/arch -maxdepth 1 -type f -name "gaze-fido-[0-9]*.pkg.tar.zst" -print -quit)"
