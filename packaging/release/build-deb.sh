@@ -83,6 +83,6 @@ Description: Gaze-verified Linux FIDO2 authenticator
 EOF
 
 mkdir -p "$out_dir"
-output="$out_dir/gaze-fido_${version}-1~${target}_${architecture}.deb"
+output="$out_dir/gaze-fido_${version}-1.${target}_${architecture}.deb"
 dpkg-deb --build --root-owner-group "$pkg_root" "$output"
 printf 'Built %s\n' "$output"

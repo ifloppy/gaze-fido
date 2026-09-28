@@ -151,8 +151,17 @@ jobs:
         run: |
           cd release-assets
           for asset in *; do
-            [ "$asset" = SHA256SUMS ] || sha256sum "$asset"
+            if [ "$asset" = SHA256SUMS ]; then
+              continue
+            fi
+            digest="$(sha256sum "$asset" | cut -d' ' -f1)"
+            release_name="${asset//\~/.}"
+            printf '%s  %s\n' "$digest" "$release_name"
           done > SHA256SUMS
           cd ..
-          gh release create "$GITHUB_REF_NAME" release-assets/* \
-            --verify-tag --title "$GITHUB_REF_NAME" --notes-file packaging/release/NOTES.md --prerelease
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" release-assets/* --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" release-assets/* \
+              --verify-tag --title "$GITHUB_REF_NAME" --notes-file packaging/release/NOTES.md --prerelease
+          fi
