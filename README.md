@@ -1,6 +1,10 @@
-# gaze-fido
+# gaze-fido — Linux virtual FIDO2 authenticator for WebAuthn passkeys
 
-Experimental Linux CTAP2 authenticator that exposes a virtual FIDO2 security key over UHID. It uses Gaze face verification for user presence and verification, and TPM 2.0 protected P-256 keys for WebAuthn credentials.
+[![Linux release packages](https://github.com/ifloppy/gaze-fido/actions/workflows/release.yml/badge.svg)](https://github.com/ifloppy/gaze-fido/actions/workflows/release.yml) [![Latest release](https://img.shields.io/github/v/release/ifloppy/gaze-fido?include_prereleases&sort=semver)](https://github.com/ifloppy/gaze-fido/releases) [![AGPL-3.0 license](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
+
+gaze-fido is an experimental Linux virtual FIDO2 authenticator and WebAuthn security key. It exposes a CTAP2 authenticator over UHID, uses Gaze face verification for user presence and verification, and keeps WebAuthn passkey credentials protected by TPM 2.0 P-256 keys. The daemon and Qt desktop companion are written in Rust and integrate with KDE and other Linux desktops.
+
+Download an x86_64 package from the [GitHub Releases](https://github.com/ifloppy/gaze-fido/releases) page, or build from this repository.
 
 ## What works
 
