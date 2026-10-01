@@ -28,7 +28,7 @@ page, or build from this repository.
 
 | | |
 | --- | --- |
-| Current release | `v0.1.0` — experimental, x86_64 Linux packages |
+| Current release | `v0.1.1` — experimental, x86_64 Linux packages |
 | Tested end to end | Firefox registration and authentication on [webauthn.io](https://webauthn.io) |
 | Desktop integration | Qt companion with tray manager and separate topmost Gaze prompt |
 | Security boundary | TPM 2.0 protected keys, Gaze-gated signatures, fail-closed errors |
@@ -46,7 +46,7 @@ before using it for important accounts.
 - TPM-generated ES256 keys; userspace stores only the TPM-wrapped private blob and public credential metadata.
 - Fresh Gaze verification is required for registration and every assertion signature. UV grants are one-shot; CTAP continuation signatures perform a new Gaze check.
 - Local CBOR credential store under `$XDG_DATA_HOME/gaze-fido/credentials.cbor` or `~/.local/share/gaze-fido/credentials.cbor`, with a private directory and file mode.
-- Linux desktop companion with a foreground Gaze verification prompt and local passkey listing/deletion.
+- Linux desktop companion with a foreground Gaze verification prompt, local passkey management, and a configurable system tray menu.
 
 ## Current limitations
 

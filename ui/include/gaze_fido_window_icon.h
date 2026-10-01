@@ -22,6 +22,7 @@ inline QApplication *gaze_fido_application() {
 
 inline void configure_gaze_fido_app_identity() {
   QApplication *application = gaze_fido_application();
+  application->setOrganizationName(QStringLiteral("GazeFido"));
   application->setApplicationName(QStringLiteral("Gaze FIDO"));
   application->setApplicationDisplayName(QStringLiteral("Gaze FIDO"));
   application->setQuitOnLastWindowClosed(false);

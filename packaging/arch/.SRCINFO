@@ -1,7 +1,7 @@
 pkgbase = gaze-fido
 	pkgdesc = Linux FIDO2 authenticator with Gaze verification and TPM-backed keys
-	pkgver = 0.1.0
-	pkgrel = 8
+	pkgver = 0.1.1
+	pkgrel = 1
 	install = gaze-fido.install
 	arch = x86_64
 	license = AGPL-3.0-only

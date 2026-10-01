@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls as Controls
 import QtQuick.Layouts
 import QtQuick.Window
+import QtCore
 import Qt.labs.platform as Platform
 import org.kde.kirigami as Kirigami
 import org.gazefido.companion
@@ -18,6 +19,12 @@ Controls.ApplicationWindow {
     title: "Gaze FIDO"
     property bool quitting: false
 
+    Settings {
+        id: appSettings
+        category: "General"
+        property bool showTrayIcon: true
+    }
+
     property var credentials: parseCredentials(backend.credentials_json)
     property var sites: groupCredentials(credentials)
     property var activePrompt: ({})
@@ -32,9 +39,21 @@ Controls.ApplicationWindow {
 
     Platform.SystemTrayIcon {
         id: trayIcon
-        visible: true
+        visible: appSettings.showTrayIcon
         icon.name: "security-high"
         tooltip: "Gaze FIDO"
+        menu: Platform.Menu {
+            Platform.MenuItem {
+                text: "显示 Gaze FIDO"
+                icon.name: "window"
+                onTriggered: root.showManager()
+            }
+            Platform.MenuItem {
+                text: "退出 Gaze FIDO"
+                icon.name: "application-exit"
+                onTriggered: root.quitApplication()
+            }
+        }
 
         onActivated: function(reason) {
             if (reason === Platform.SystemTrayIcon.Trigger
@@ -48,7 +67,7 @@ Controls.ApplicationWindow {
         repeat: false
         running: true
         onTriggered: {
-            if (!trayIcon.available)
+            if (appSettings.showTrayIcon && !trayIcon.available)
                 root.showManager()
         }
     }
@@ -194,6 +213,16 @@ Controls.ApplicationWindow {
                 Controls.ToolTip.visible: hovered
                 Controls.ToolTip.text: "刷新凭据列表"
                 onClicked: backend.refreshCredentials()
+            }
+
+            Controls.ToolButton {
+                icon.name: "configure"
+                text: "设置"
+                display: Controls.AbstractButton.IconOnly
+                Accessible.name: text
+                Controls.ToolTip.visible: hovered
+                Controls.ToolTip.text: text
+                onClicked: settingsDialog.open()
             }
 
             Controls.ToolButton {
@@ -377,6 +406,42 @@ Controls.ApplicationWindow {
                 opacity: 0.76
                 font.pointSize: 9
                 Layout.fillWidth: true
+            }
+        }
+    }
+
+    Controls.Dialog {
+        id: settingsDialog
+        modal: true
+        anchors.centerIn: Controls.Overlay.overlay
+        title: "Gaze FIDO 设置"
+
+        contentItem: ColumnLayout {
+            spacing: 10
+            implicitWidth: 380
+
+            Controls.CheckBox {
+                Layout.fillWidth: true
+                text: "显示托盘图标"
+                checked: appSettings.showTrayIcon
+                onToggled: appSettings.showTrayIcon = checked
+            }
+
+            Controls.Label {
+                Layout.fillWidth: true
+                text: "隐藏图标只隐藏托盘入口，桌面伴随程序和认证服务仍会在后台运行。再次启动 Gaze FIDO 可重新打开管理界面。"
+                wrapMode: Text.WordWrap
+                opacity: 0.78
+            }
+        }
+
+        footer: Controls.DialogButtonBox {
+            alignment: Qt.AlignRight
+
+            Controls.Button {
+                text: "完成"
+                Controls.DialogButtonBox.buttonRole: Controls.DialogButtonBox.AcceptRole
+                onClicked: settingsDialog.accept()
             }
         }
     }
