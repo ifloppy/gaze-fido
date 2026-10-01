@@ -15,6 +15,9 @@ fn main() {
         QQuickStyle::set_style(&QString::from("org.kde.desktop"));
     }
     window_icon::configure_app_identity();
+    if !window_icon::ensure_single_instance() {
+        return;
+    }
 
     let mut engine = QQmlApplicationEngine::new();
     if let Some(engine) = engine.as_mut() {

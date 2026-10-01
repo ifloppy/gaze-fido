@@ -8,6 +8,7 @@ import org.gazefido.companion
 
 Controls.ApplicationWindow {
     id: root
+    objectName: "gazeFidoManagerWindow"
 
     width: 760
     height: 620
@@ -93,6 +94,9 @@ Controls.ApplicationWindow {
 
     function openVerificationPrompt(serialized) {
         try {
+            // A previous successful prompt may still have its auto-close timer
+            // pending. Do not let that timer close and cancel this new request.
+            closePromptTimer.stop()
             activePrompt = JSON.parse(serialized)
             activeRequestId = activePrompt.request_id || ""
             promptResult = ""
@@ -523,7 +527,10 @@ Controls.ApplicationWindow {
     Timer {
         id: closePromptTimer
         interval: 1100
-        onTriggered: verificationWindow.close()
+        onTriggered: {
+            if (!root.promptBusy)
+                verificationWindow.close()
+        }
     }
 
     Connections {

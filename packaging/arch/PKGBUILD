@@ -2,7 +2,7 @@
 # This recipe is not an AUR recipe; it intentionally builds from the parent checkout.
 pkgname=gaze-fido
 pkgver=0.1.0
-pkgrel=8
+pkgrel=9
 pkgdesc='Linux FIDO2 authenticator with Gaze verification and TPM-backed keys'
 arch=('x86_64')
 license=('AGPL-3.0-only')

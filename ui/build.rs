@@ -6,6 +6,7 @@ fn main() {
     )
     .files(["src/backend.rs", "src/window_icon.rs"])
     .qt_module("Widgets")
+    .qt_module("Network")
     .include_dir("include")
     .build();
 }
