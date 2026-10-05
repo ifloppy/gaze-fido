@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/ifloppy/gaze-fido/actions/workflows/release.yml"><img src="https://github.com/ifloppy/gaze-fido/actions/workflows/release.yml/badge.svg" alt="Linux release packages"></a>
-  <a href="https://github.com/ifloppy/gaze-fido/releases"><img src="https://img.shields.io/github/v/release/ifloppy/gaze-fido?include_prereleases&sort=semver" alt="Latest release"></a>
+  <a href="https://github.com/ifloppy/gaze-fido/releases"><img src="https://img.shields.io/github/v/release/ifloppy/gaze-fido?sort=semver" alt="Latest release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue.svg" alt="AGPL-3.0 license"></a>
 </p>
 
@@ -28,7 +28,7 @@ page, or build from this repository.
 
 | | |
 | --- | --- |
-| Current release | `v0.1.1` — experimental, x86_64 Linux packages |
+| Current release | `v0.1.2` — experimental, x86_64 Linux packages |
 | Tested end to end | Firefox registration and authentication on [webauthn.io](https://webauthn.io) |
 | Desktop integration | Qt companion with tray manager and separate topmost Gaze prompt |
 | Security boundary | TPM 2.0 protected keys, Gaze-gated signatures, fail-closed errors |

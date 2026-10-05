@@ -1,6 +1,6 @@
 [package]
 name = "gaze-fido"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 description = "Experimental Linux FIDO2 authenticator using Gaze for user verification and TPM 2.0 for key protection"
 publish = false

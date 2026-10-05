@@ -1,7 +1,7 @@
 # Arch package for the current source checkout.
 # This recipe is not an AUR recipe; it intentionally builds from the parent checkout.
 pkgname=gaze-fido
-pkgver=0.1.1
+pkgver=0.1.2
 pkgrel=1
 pkgdesc='Linux FIDO2 authenticator with Gaze verification and TPM-backed keys'
 arch=('x86_64')

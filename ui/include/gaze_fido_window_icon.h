@@ -60,7 +60,6 @@ inline void gaze_fido_raise_manager_window(QApplication *application) {
 }
 
 inline bool ensure_gaze_fido_single_instance() {
-  QApplication *application = gaze_fido_application();
   const QString runtime_dir = qEnvironmentVariable("XDG_RUNTIME_DIR");
   if (runtime_dir.isEmpty()) {
     qWarning() << "Cannot start Gaze FIDO UI without XDG_RUNTIME_DIR";
@@ -69,8 +68,11 @@ inline bool ensure_gaze_fido_single_instance() {
 
   const QString server_name =
       QDir(runtime_dir).filePath(QStringLiteral("gaze-fido-ui-instance"));
-  auto *server = new QLocalServer(application);
-  server->setSocketOptions(QLocalServer::UserAccessOption);
+  auto *server = new QLocalServer();
+  // XDG_RUNTIME_DIR is already private to this user. Do not set
+  // UserAccessOption: Qt's Unix implementation stages permissioned sockets
+  // under a temporary name and renames them over the requested path, which
+  // can replace an active instance's endpoint during a second launch.
 
   if (!server->listen(server_name)) {
     if (gaze_fido_activate_existing(server_name)) {
@@ -89,6 +91,13 @@ inline bool ensure_gaze_fido_single_instance() {
       return false;
     }
   }
+
+  // Claim the endpoint before constructing QApplication. Duplicate launches
+  // can notify the primary instance and exit without initializing Qt Widgets.
+  QApplication *application = gaze_fido_application();
+  server->setParent(application);
+  QFile::setPermissions(server_name,
+                        QFileDevice::ReadOwner | QFileDevice::WriteOwner);
 
   QObject::connect(server, &QLocalServer::newConnection, server,
                    [server, application]() {

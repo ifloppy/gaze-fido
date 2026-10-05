@@ -216,23 +216,37 @@ Controls.ApplicationWindow {
             }
 
             Controls.ToolButton {
-                icon.name: "configure"
-                text: "设置"
+                icon.name: "application-menu"
+                text: "菜单"
                 display: Controls.AbstractButton.IconOnly
                 Accessible.name: text
                 Controls.ToolTip.visible: hovered
                 Controls.ToolTip.text: text
-                onClicked: settingsDialog.open()
-            }
+                onClicked: managerMenu.open()
 
-            Controls.ToolButton {
-                icon.name: "application-exit"
-                text: "退出 Gaze FIDO"
-                display: Controls.AbstractButton.IconOnly
-                Accessible.name: text
-                Controls.ToolTip.visible: hovered
-                Controls.ToolTip.text: text
-                onClicked: root.quitApplication()
+                Controls.Menu {
+                    id: managerMenu
+
+                    Controls.MenuItem {
+                        text: "设置"
+                        icon.name: "configure"
+                        onTriggered: settingsDialog.open()
+                    }
+
+                    Controls.MenuItem {
+                        text: "关于 Gaze FIDO"
+                        icon.name: "help-about"
+                        onTriggered: aboutDialog.open()
+                    }
+
+                    Controls.MenuSeparator {}
+
+                    Controls.MenuItem {
+                        text: "退出 Gaze FIDO"
+                        icon.name: "application-exit"
+                        onTriggered: root.quitApplication()
+                    }
+                }
             }
         }
     }
@@ -280,7 +294,7 @@ Controls.ApplicationWindow {
                 delegate: Controls.GroupBox {
                     id: siteGroup
                     required property var modelData
-                    width: siteList.width
+                    width: Math.max(0, siteList.width - siteScrollBar.width)
                     title: modelData.name
 
                     contentItem: ColumnLayout {
@@ -357,6 +371,8 @@ Controls.ApplicationWindow {
                 }
 
                 Controls.ScrollBar.vertical: Controls.ScrollBar {
+                    id: siteScrollBar
+                    width: 14
                     policy: Controls.ScrollBar.AsNeeded
                 }
 
@@ -442,6 +458,41 @@ Controls.ApplicationWindow {
                 text: "完成"
                 Controls.DialogButtonBox.buttonRole: Controls.DialogButtonBox.AcceptRole
                 onClicked: settingsDialog.accept()
+            }
+        }
+    }
+
+    Controls.Dialog {
+        id: aboutDialog
+        modal: true
+        anchors.centerIn: Controls.Overlay.overlay
+        title: "关于 Gaze FIDO"
+
+        contentItem: ColumnLayout {
+            spacing: 8
+            implicitWidth: 360
+
+            Controls.Label {
+                Layout.fillWidth: true
+                text: `Gaze FIDO v${backend.app_version}`
+                font.pointSize: 15
+                font.weight: Font.DemiBold
+            }
+
+            Controls.Label {
+                Layout.fillWidth: true
+                text: "Linux 虚拟 FIDO2 身份验证器，使用 Gaze 人脸验证和 TPM 保护的通行密钥。"
+                wrapMode: Text.WordWrap
+            }
+        }
+
+        footer: Controls.DialogButtonBox {
+            alignment: Qt.AlignRight
+
+            Controls.Button {
+                text: "关闭"
+                Controls.DialogButtonBox.buttonRole: Controls.DialogButtonBox.AcceptRole
+                onClicked: aboutDialog.accept()
             }
         }
     }

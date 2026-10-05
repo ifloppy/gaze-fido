@@ -25,6 +25,7 @@ pub mod qobject {
     extern "RustQt" {
         #[qobject]
         #[qml_element]
+        #[qproperty(QString, app_version)]
         #[qproperty(QString, credentials_json)]
         #[qproperty(bool, service_available)]
         #[qproperty(QString, status_message)]
@@ -56,6 +57,7 @@ pub mod qobject {
 
 #[derive(Default)]
 pub struct BackendRust {
+    app_version: QString,
     credentials_json: QString,
     service_available: bool,
     status_message: QString,
@@ -71,6 +73,8 @@ impl qobject::Backend {
         if self.as_ref().rust().started {
             return;
         }
+        self.as_mut()
+            .set_app_version(QString::from(env!("CARGO_PKG_VERSION")));
 
         let (sender, receiver) = mpsc::channel();
         let writer = Arc::new(Mutex::new(None));

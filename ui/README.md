@@ -6,12 +6,13 @@ connects to the daemon over the user-only Unix socket at
 credential store, and normally stays in the desktop system tray. Close the
 management window to hide it. Click the tray icon to show it, or right-click
 the icon to show the window or quit the companion. The management window's
-settings let you hide the tray icon while leaving the companion running in the
-background. Starting the companion again raises its existing management
+menu provides settings, an About dialog with the running UI version, and an exit
+action. Settings let you hide the tray icon while leaving the companion running
+in the background. Starting the companion again raises its existing management
 window. During Gaze verification, a separate topmost window appears without
-opening or raising the management window. If the tray is enabled but unavailable,
-the management window opens as a fallback. Controls follow Qt's active desktop
-style; KDE Plasma uses the KDE Qt Quick style when installed.
+opening or raising the management window. If the tray is enabled but
+unavailable, the management window opens as a fallback. Controls follow Qt's
+active desktop style; KDE Plasma uses the KDE Qt Quick style when installed.
 
 Run it as the same desktop user as the daemon:
 
